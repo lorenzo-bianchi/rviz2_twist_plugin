@@ -162,7 +162,7 @@ void TwistPanel::send_twist()
 
   auto twist = Twist();
   twist.linear.x = std::round(linear_velocity_ * 100.0) / 100.0;
-  twist.angular.z = std::round(angular_velocity_ * 100.0) / 100.0;
+  twist.angular.z = -std::round(angular_velocity_ * 100.0) / 100.0;
 
   for (const auto& pub : publishers_) {
     pub->publish(twist);
