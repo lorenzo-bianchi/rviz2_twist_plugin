@@ -32,9 +32,11 @@ TwistPanel::TwistPanel(QWidget* parent)
   topic_list_ = new QListWidget();
   layout->addWidget(topic_list_);
 
-  QString topic_name = "/cmd_vel";
-  topic_list_->addItem(topic_name);
-  auto pub = node_->create_publisher<geometry_msgs::msg::Twist>(topic_name.toStdString(), 10);
+  QString default_topic_name = "/cmd_vel";
+  topic_list_->addItem(default_topic_name);
+  auto pub =
+    node_->create_publisher<geometry_msgs::msg::Twist>(default_topic_name.toStdString(), 10);
+  topics_.append(default_topic_name);
   publishers_.append(pub);
 
   QPushButton* remove_topic_button = new QPushButton("Remove selected");
@@ -135,7 +137,7 @@ TwistPanel::TwistPanel(QWidget* parent)
   // Timer for periodic publishing
   timer_ = new QTimer(this);
   connect(timer_, &QTimer::timeout, this, &TwistPanel::send_twist);
-  timer_->start(100); // Publish every 100 ms
+  timer_->start(100);
 }
 
 void TwistPanel::update_velocity_stick(double linear, double angular)
